@@ -1,0 +1,15 @@
+{
+  "name": "ranty-fixer",
+  "version": "1.0.0",
+  "description": "Support for ranty at prod",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nbased": "^1.2.0",
+    "serverless-iam-roles-per-function": "^2.0.2"
+  }
+}

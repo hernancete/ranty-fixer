@@ -1,0 +1,24 @@
+service: ranty-support
+
+plugins:
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    LOG_LEVEL: INFO
+    RANTY_STACK_PREFIX: ranty-sls-components-${self:provider.stage}
+
+custom:
+  stackPrefix: '${self:service}-${self:provider.stage}'
+
+# resources:
+#   - ${file(resource/tables.yml)}
+#   - ${file(resource/queues.yml)}
+
+functions:
+  - ${file(src/fixer/index.yml)}

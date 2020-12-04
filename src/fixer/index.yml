@@ -1,0 +1,31 @@
+Fixer:
+  handler: src/fixer/handler/fixer.handler
+  environment:
+    PROCESS_DATE: "2020-12-03"
+    B2B_TOKEN: b2bToken
+    PAYMENT_REQUESTS_TABLE: ${self:provider.environment.RANTY_STACK_PREFIX}-payment-requests-table
+    PAYMENTS_TABLE: ${self:provider.environment.RANTY_STACK_PREFIX}-payments-table
+    TRANSACTIONS_TABLE: ${self:provider.environment.RANTY_STACK_PREFIX}-transaction-table
+    LOST_TRANSACTIONS_TABLE: ranty-sls-external-prod-lost-transactions-table
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:us-east-1:962527738418:table/ranty-sls-components-prod-payment-requests-table
+        - !ImportValue ${self:provider.environment.RANTY_STACK_PREFIX}-payments-table-arn
+        - !ImportValue ${self:provider.environment.RANTY_STACK_PREFIX}-transaction-table-arn
+        - arn:aws:dynamodb:us-east-1:962527738418:table/ranty-sls-external-prod-lost-transactions-table
+
+UpdateLostTransaction:
+  handler: src/fixer/handler/updateLostTransaction.handler
+  environment:
+    PAYMENTS_TABLE: ${self:provider.environment.RANTY_STACK_PREFIX}-payments-table
+    LOST_TRANSACTIONS_TABLE: ranty-sls-external-prod-lost-transactions-table
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - !ImportValue ${self:provider.environment.RANTY_STACK_PREFIX}-payments-table-arn
+        - arn:aws:dynamodb:us-east-1:962527738418:table/ranty-sls-external-prod-lost-transactions-table
